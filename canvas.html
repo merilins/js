@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    #canvas {
+        border: 1px solid #000;
+    }
+    #pic {
+        display: none;
+    }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="600" height="500"></canvas>
+
+    <img id="pic" src="https://lh3.googleusercontent.com/gN6iBKP1b2GTXZZoCxhyXiYIAh8QJ_8xzlhEK6csyDadA4GdkEdIEy9Bc8s5jozt1g=w300">
+    
+    <script>
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+
+    //Ristkülik
+    // ctx.fillRect(50, 50, 200, 100);
+
+    ctx.beginPath();
+    ctx.fillStyle = "#814";
+    ctx.strokeStyle = "#0f5";
+    ctx.lineWidth = 10;
+    ctx.rect(10, 20, 200, 100);
+    ctx.stroke();
+    ctx.fill();
+
+
+    // Jooned
+
+    ctx.beginPath();
+    ctx.fillStyle = "rgba(0, 255, 0, 0.5)";
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = "#000";
+    ctx.moveTo(250,10);
+    ctx.lineTo(250,110);
+    ctx.lineTo(350,110);
+    ctx.closePath();
+    ctx.stroke();
+    ctx.fill();
+
+    // Kaar
+
+    ctx.beginPath();
+    ctx.fillStyle = "rgba(0, 0, 255, 0.5)"; // alpha = 0.5ehk 50% läbipaistev, ei paista üldse läbi
+    ctx.arc(100, 100, 80, 0, 1*Math.PI);
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.lineWidth = 10;
+    ctx.strokeStyle = "rgba(100, 150, 0, 0.5)";
+    ctx.arc(300, 150, 80, 0, 0.5*Math.PI, true);
+    ctx.lineTo(canvas.width, canvas.height);
+    ctx.stroke();
+
+
+    // Text
+    ctx.fillStyle = "#000";
+    ctx.font = "20px Arial";
+    var tekst = "Tere, olen JavaScript!";
+    var txtWidth = ctx. measureText(tekst).width; 
+    var txtInt = parseInt(txtWidth); // parseInt muudab komakohtadega arvu täisarvuks, measureText mõõdab teksti pikkuse px
+    ctx.fillText(tekst + " - " + txtInt, 25, 200);
+    
+
+    // Pilt
+
+    // kui pilton laetud,siis joonista, see variant on parem kui html tag kaudu panna
+   var logo = new Image();   // Create new img element
+    logo.src = 'https://lh3.googleusercontent.com/gN6iBKP1b2GTXZZoCxhyXiYIAh8QJ_8xzlhEK6csyDadA4GdkEdIEy9Bc8s5jozt1g=w300';
+    logo.onload = function() {
+        ctx.drawImage(logo, 150, 100, 150, 150);
+    }
+
+    // Kui HTML on täielikult laetud img tag kaudu
+    window.onload = function() { // hea tava on, et kogu script lähen window.onload sisse
+        var pic = document.getElementById("pic");
+        ctx.drawImage(pic, 250, 200, 250, 250);
+    }
+
+
+    </script>
+</body>
+</html>
