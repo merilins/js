@@ -18,24 +18,81 @@
         var canvas = document.getElementById("canvas");
         var ctx = canvas.getContext("2d");
 
+        var canvasLocation = canvas.getBoundingClientRect();
+
         function pall(x, y, r) {
             this.x = x;
             this.y = y;
             this.r = r;
+            this.vx = 0;
+            this.vy = 0;
         }
 
-        var pall1 = new pall(20, 50, 15);
+        var pallid = [];
+
+        for(var i = 0; i < 10; i++) {
+            var r = parseInt(10 + Math.random() * 20);
+            var x = parseInt(r + Math.random() * (canvas.width - 2*r));
+            var y = parseInt(r + Math.random() * (canvas.height - 2*r));
+
+            pallid.push(new pall(x, y, r));
+        }
+
+        var kiirus = 5;
+        var bounce = 0.75;
 
         function arvuta() {
+            for(var i = 0; i < pallid.length; i++) {
 
+                pallid[i].x += pallid[i].vx;
+                pallid[i].y += pallid[i].vy;
+
+                if(pallid[i].vx > 0) {
+                    pallid[i].vx -= 1;
+                    pallid[i].vx = -pallid[i].vx * bounce;
+                }
+                if(pallid[i].vy > 0) {
+                    pallid[i].vy -= 1;
+                    pallid[i].vy = -pallid[i].vy * bounce;
+                }
+            }
         }
 
         function joonista() {
             arvuta();
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (var i = 0; i < pallid.length; i++) {
+                ctx.fillStyle = "rgb(88, 170, 21)";
+                ctx.beginPath();
+                ctx.arc(pallid[i].x, pallid[i].y, pallid[i].r, 0, 2*Math.PI)
+                ctx.fill();
+
+            }
             requestAnimationFrame(joonista);
         }
         requestAnimationFrame(joonista);
+
+        window.addEventListener("mousedown", function(e) {
+            var hx = e.clientX - canvasLocation.y;
+            var hy = e.clientY - canvasLocation.y;
+
+            for (var i = 0; i < pallid.length; i++){
+                var kaugusx = pallid[i].x - hx;
+                var kaugusy =pallid[i].y - hy;
+                var kaugus = Math.sqrt(kaugusx * kaugusx + kaugusy * kaugusy) - pallid[i].r;
+
+                if (kaugus <= 0) {
+                    //pallid[i].x += kaugusx;
+                    //pallid[i].y += kaugusy;
+                    //pallid.splice(i, 1);
+                    //pallid[i].r += 10;
+
+                    pallid[i].vx += kaugusx / 10;
+                    pallid[i].vy += kaugusy / 10;
+                }
+            }
+        });
 
     </script>
 </body>
