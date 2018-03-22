@@ -12,7 +12,7 @@
     </style>
 </head>
 <body>
-    <canvas id="canvas" width="500" height="500"></canvas>
+    <canvas id="canvas" width="600" height="700"></canvas>
 
     <script>
         var canvas = document.getElementById("canvas");
@@ -20,18 +20,23 @@
 
         var ruut = {
             x: 10,
-            y: 10,
+            y: 0,
             w: 20,
-            h: 20
+            h: 20,
+            kiirus: 0
         }
 
+        var gravity = 0.3;
+        var bounce = 0.75;
+
         function arvuta() {
-            if( (ruut.x + ruut.w) < canvas.width) {
-            ruut.x += 100;
-            //ruut.y += 3;
-            }
-            if ( ruut.x+ ruut.w > canvas.width) {
-                ruut.x = canvas.width - ruut.w;
+            ruut.kiirus += gravity;
+            ruut.y += ruut.kiirus;
+
+            if ( ruut.y + ruut.h > canvas.height) {
+                ruut.y = canvas.height - ruut.h;
+                // Põrkamine
+                ruut.kiirus = -ruut.kiirus * bounce;
             }
         }
 
